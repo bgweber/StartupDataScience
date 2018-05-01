@@ -1,12 +1,9 @@
 <?php
- $dataFile = fopen("tracking.log", "a");
-
- $message = $_GET['message'];
-
- if ($message != '') {
-   fwrite($dataFile, "$message\n");
- }
-
- fflush($dataFile);
- fclose($dataFile);
+    $message = $_GET['message'];
+    if ($message != '') {
+        $dataFile = fopen("telemetry.log", "a");
+        fwrite($dataFile, "$message\n");
+        fflush($dataFile);
+        fclose($dataFile);
+    }
 ?>

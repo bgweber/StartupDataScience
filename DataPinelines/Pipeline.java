@@ -47,8 +47,8 @@ import com.google.gson.JsonParser;
 public class RawEventPipeline {
 	
 	/**	The topic to subscribe to for game events */
-	private static String topic = "projects/gameanalytics-199018/topics/raw-events";
-	private static String topic2 = "projects/gameanalytics-199018/topics/raw-events2";
+	private static String topic = "projects/your_project_id/topics/raw-events";
+	private static String topic2 = "projects/your_project_id/topics/processed-events";
 	
 	/** Provides an interface for setting theGCS temp location */
 	interface Options extends PipelineOptions, Serializable {

@@ -110,6 +110,7 @@ knitr::include_graphics("images/3-5.png")
 ### Setting up the Environment
 The first step in building a data pipeline is setting up the dependencies necessary to compile and deploy the project. I used the following maven dependencies to set up environments for the tracking API that sends events to the pipeline, and the data pipeline that processes events.
 
+&nbsp;
 ```{r eval=FALSE}
 <!-- Dependencies for the Tracking API ->
 <dependency>
@@ -140,6 +141,7 @@ knitr::include_graphics("images/3-6.png")
 ### Publishing Events
 In order to build a usable data pipeline, it's useful to build APIs that encapsulate the details of sending event data. The Tracking API class provides this functionality, and can be used to send generated event data to the data pipeline. The code below shows the method signature for sending events, and shows how to generate sample data.
 
+&nbsp;
 ```{r eval=FALSE}
 // send a batch of events    
 for (int i=0; i<10000; i++) {
@@ -161,6 +163,7 @@ for (int i=0; i<10000; i++) {
 
 The tracking API establishes a connection to a PubSub topic, passes events as a JSON format, and implements a callback for notification of delivery failures. The code used to send events is provided below, and is based on Google's PubSub example.
 
+&nbsp;
 ```{r eval=FALSE}
 // Setup a PubSub connection 
 TopicName topicName = TopicName.of(projectID, topicID);
@@ -168,7 +171,8 @@ Publisher publisher = Publisher
     .newBuilder(topicName).build();
 
 // Specify an event to send
-String event={\"type\":\"session\",\"version\":\"1\"}";
+String event = 
+    {\"type\":\"session\",\"version\":\"1\"}";
 
 // Convert the event to bytes    
 ByteString data = ByteString
@@ -194,6 +198,7 @@ knitr::include_graphics("images/3-7.png")
 
 The first step in this data pipeline is reading events from a PubSub topic and passing ingested messages to the DataFlow process. DataFlow provides a PubSub connector that enables streaming of PubSub messages to other DataFlow components. The code below shows how to instantiate the data pipeline, specify streaming mode, and to consume messages from a specific PubSub topic. The output of this process is a collection of PubSub messages that can be stored for later analysis.
 
+&nbsp;
 ```{r eval=FALSE}
 // set up pipeline options    
 Options options = PipelineOptionsFactory.fromArgs(args)
@@ -212,8 +217,9 @@ The first way we want to store events is in a columnar format that can be used t
 knitr::include_graphics("images/3-8.png")
 ```
 
-For AVRO, we can't use a direct streaming approach. We need to group events into batches before we can save to flat files. The way this can be accomplished in DataFlow is by applying a windowing function that groups events into fixed batches. The code below applies transformations that convert the PubSub messages into String objects, group the messages into 5 minute intervals, and output the resulting batches to AVRO files on Google Storage.
+For AVRO, we can't use a direct streaming approach. We need to group events into batches before we can save to flat files. The way this can be accomplished in DataFlow is by applying a windowing function that groups events into fixed batches. The code below applies transformations that convert the PubSub messages into String objects, group the messages into 5 minute intervals, and output the resulting batches to AVRO files on Google Storage. To summarize, the code batches events into 5 minute windows and then exports the events to AVRO files on Google Storage.
 
+&nbsp;
 ```{r eval=FALSE}
 // AVRO output portion of the pipeline    
 events.apply("To String", 
@@ -240,15 +246,13 @@ events.apply("To String",
   .withSuffix(".avro"));
 ``` 
 
-To summarize, the above code batches events into 5 minute windows and then exports the events to AVRO files on Google Storage.
-
 The result of this portion of the data pipeline is a collection of AVRO files on google storage that can be used to build a data lake. A new AVRO output is generated every 5 minutes, and downstream ETLs can parse the raw events into processed event-specific table schemas. The image below shows a sample output of AVRO files.
 
 ```{r 3-9, echo=FALSE, out.width="100%", fig.align="center", fig.cap="AVRO files saved to Google Storage"}
 knitr::include_graphics("images/3-9.png")
 ```
 
-In addition to creating a data lake, we want the events to be immediately accessible in a query environment. DataFlow provides a BigQuery connector which serves this functionality, and data streamed to this endpoint is available for analysis after a short duration. This portion of the data pipeline is shown in the figure below.
+In addition to creating a data lake, we want the events to be immediately accessible in a query environment. DataFlow provides a BigQuery connector which serves this functionality, and data streamed to this endpoint is available for analysis after a short duration. This portion of the data pipeline is shown below.
 
 ```{r 3-10, echo=FALSE, out.width="50%", fig.align="center", fig.cap="Streaming events from DataFlow to BigQuery"}
 knitr::include_graphics("images/3-10.png")
@@ -256,6 +260,7 @@ knitr::include_graphics("images/3-10.png")
 
 The data pipeline converts the PubSub messages into TableRow objects, which can be directly inserted into BigQuery. The code below consists of two apply methods: a data transformation and a IO writer. The transform step reads the message payloads from PubSub, parses the message as a JSON object, extracts the eventType and eventVersion attributes, and creates a TableRow object with these attributes in addition to a timestamp and the message payload. The second apply method tells the pipeline to write the records to BigQuery and to append the events to an existing table.
 
+&nbsp;
 ```{r eval=FALSE}
 // parse the PubSub events and create rows  
 events.apply("To Table Rows", ParDo.of(new  
@@ -291,8 +296,7 @@ events.apply("To Table Rows", ParDo.of(new
   .withWriteDisposition(WriteDisposition.WRITE_APPEND))
 ```
 
-To summarize the above code, each message that is consumed from PubSub is converted into a TableRow object with a timestamp and then streamed to BigQuery for storage.
-
+Each message that is consumed from PubSub is converted into a TableRow object with a timestamp and then streamed to BigQuery for storage.
 The result of this portion of the data pipeline is that events will be streamed to BigQuery and will be available for analysis in the output table specified by the DataFlow task. In order to effectively use these events for queries, you'll need to build additional ETLs for creating processed event tables with schematized records, but you now have a data collection mechanism in place for storing tracking events.
 
 ```{r 3-11, echo=FALSE, out.width="100%", fig.align="center", fig.cap="Game event records queried from the raw-events table in BigQuery"}
@@ -302,6 +306,7 @@ knitr::include_graphics("images/3-11.png")
 ### Deploying and Auto Scaling
 With DataFlow you can test the data pipeline locally or deploy to the cloud. If you run the code samples without specifying additional attributes, then the data pipeline will execute on your local machine. In order to deploy to the cloud and take advantage of the auto scaling capabilities of this data pipeline, you need to specify a new runner class as part of your runtime arguments. In order to run the data pipeline, I used the following runtime arguments:
 
+&nbsp;
 ```{r eval=FALSE}
 --runner=org.apache.beam.runners.dataflow.DataflowRunner 
 --jobName=game-analytics
@@ -309,14 +314,14 @@ With DataFlow you can test the data pipeline locally or deploy to the cloud. If 
 --tempLocation=gs://temp-bucket
 ```
 
-Once the job is deployed, you should see a message that the job has been submitted. You can then click on the DataFlow console to see the task:
+Once the job is deployed, you should see a message that the job has been submitted. You can then click on the DataFlow console to see the task.
+The runtime configuration specified above will not default to an auto scaling configuration. In order to deploy a job that scales up based on demand, you'll need to specify additional attributes:
 
 ```{r 3-12, echo=FALSE, out.width="80%", fig.align="center", fig.cap="The steaming data pipeline running on Google Cloud"}
 knitr::include_graphics("images/3-12.png")
 ```
 
-The runtime configuration specified above will not default to an auto scaling configuration. In order to deploy a job that scales up based on demand, you'll need to specify additional attributes:
-
+&nbsp;
 ```{r eval=FALSE}
 --autoscalingAlgorithm=THROUGHPUT_BASED
 --maxNumWorkers=30
@@ -332,12 +337,13 @@ knitr::include_graphics("images/3-13.png")
 The pipeline presented so far saves tracking events as raw data. To translate these events to processed data, we'll need to apply event specific schemas. There's a few different approaches we can take with this pipeline:
 
 - Apply the schemas in the current DataFlow pipeline and save to BigQuery
-- Apply the schemas in the current pipeline and send to a new PubSub
+- Apply the schemas in the pipeline and send to a new PubSub
 - Apply additional attributes to the raw events and send to a new PubSub
 - Use downstream ETLs to apply schemas
 
 The first approach is the simplest, but it doesn't provide a good solution for updating the event definitions if needed. This approach can be implemented as shown in the code below, which shows how to filter and parse MatchStart events for entry into BigQuery.
 
+&nbsp;
 ```{r eval=FALSE}
 events.apply("To MatchStart Events", ParDo.of(
     new DoFn<PubsubMessage, TableRow>() {
@@ -376,6 +382,7 @@ knitr::include_graphics("images/3-14.png")
 
 A third approach that can be used is sending raw events with additional attributes to another PubSub topic. A second DataFlow job can then be set up to parse events as needed. The code below shows how to parse raw events, add additional attributes to the PubSub message for filtering, and publish the events to a second topic. This approach enables event definitions to be changed without restarting the raw event pipeline.
 
+&nbsp;
 ```{r eval=FALSE}
 // topic for raw events with additional attributes 
 private static String processed = 

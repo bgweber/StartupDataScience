@@ -1,0 +1,22 @@
+---
+title: "Business Intelligence"
+author: "Ben Weber"
+date: "May 21, 2018"
+output: html_document
+---
+## Taxi Payments 
+R Markdown can outputs reports as PDF or HTML.
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(bigrquery)
+library(plotly)
+project <- "your_project_id"
+
+sql <- "SELECT  
+  substr(cast(pickup_datetime as String), 1, 7) as date
+  ,payment_type as type 
+  ,sum(total_amount) as amount
+FROM `nyc-tlc.yellow.trips`
+group by 1, 2"
+df <- query_exec(sql, project = project, use_legacy_sql = FALSE)
+plot_ly(df, x = ~date, y = ~amount, color = ~type) %>% add_lines()
+```

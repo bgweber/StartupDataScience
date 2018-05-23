@@ -1,5 +1,4 @@
 
-
 # summary stats?
 library(bigrquery)
 project <- "your_project_id"
@@ -70,6 +69,3 @@ boot <- boot.relimp(fit, b = 10, type = c("lmg", "first", "last", "pratt")
                     , rank = TRUE, diff = TRUE, rela = TRUE)
 booteval.relimp(boot) 
 plot(booteval.relimp(boot,sort=TRUE)) 
-
-
-

@@ -13,8 +13,6 @@ import org.apache.beam.sdk.options.*;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
-import org.apache.beam.sdk.transforms.DoFn.ProcessContext;
-import org.apache.beam.sdk.transforms.DoFn.ProcessElement;
 import org.apache.beam.sdk.values.PCollection;
 import org.dmg.pmml.FieldName;
 import org.dmg.pmml.regression.RegressionModel;
@@ -76,7 +74,7 @@ public class PmmlDataStore {
     TableSchema schema = new TableSchema().setFields(fields);
 
     // create the data flow pipeline
-    PmmlPipeline.Options options = PipelineOptionsFactory.fromArgs(args).withValidation().as(PmmlPipeline.Options.class);
+    PmmlDataStore.Options options = PipelineOptionsFactory.fromArgs(args).withValidation().as(PmmlDataStore.Options.class);
     Pipeline pipeline = Pipeline.create(options);
 
     // get the data from BigQuery

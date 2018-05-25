@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_3" version="4.3">
+	<Header>
+		<Application name="JPMML-R" version="1.2.19"/>
+		<Timestamp>2018-05-25T18:00:21Z</Timestamp>
+	</Header>
+	<DataDictionary>
+		<DataField name="weight_pounds" optype="continuous" dataType="double"/>
+		<DataField name="year" optype="continuous" dataType="double"/>
+		<DataField name="plurality" optype="continuous" dataType="double"/>
+		<DataField name="apgar_5min" optype="continuous" dataType="double"/>
+		<DataField name="mother_age" optype="continuous" dataType="double"/>
+		<DataField name="father_age" optype="continuous" dataType="double"/>
+		<DataField name="gestation_weeks" optype="continuous" dataType="double"/>
+		<DataField name="ever_born" optype="continuous" dataType="double"/>
+		<DataField name="mother_married" optype="categorical" dataType="boolean">
+			<Value value="false"/>
+			<Value value="true"/>
+		</DataField>
+	</DataDictionary>
+	<RegressionModel functionName="regression">
+		<MiningSchema>
+			<MiningField name="weight_pounds" usageType="target"/>
+			<MiningField name="year"/>
+			<MiningField name="plurality"/>
+			<MiningField name="apgar_5min"/>
+			<MiningField name="mother_age"/>
+			<MiningField name="father_age"/>
+			<MiningField name="gestation_weeks"/>
+			<MiningField name="ever_born"/>
+			<MiningField name="mother_married"/>
+		</MiningSchema>
+		<RegressionTable intercept="11.82825946749738">
+			<NumericPredictor name="year" coefficient="-0.0015478882184680862"/>
+			<NumericPredictor name="plurality" coefficient="-2.1703912756511254"/>
+			<NumericPredictor name="apgar_5min" coefficient="-7.204416271249425E-4"/>
+			<NumericPredictor name="mother_age" coefficient="0.011490472355621577"/>
+			<NumericPredictor name="father_age" coefficient="-0.0024906543152388157"/>
+			<NumericPredictor name="gestation_weeks" coefficient="0.010845982465606988"/>
+			<NumericPredictor name="ever_born" coefficient="0.010980856659668442"/>
+			<CategoricalPredictor name="mother_married" value="true" coefficient="0.26494217739205655"/>
+		</RegressionTable>
+	</RegressionModel>
+</PMML>

@@ -123,7 +123,7 @@ I’ve also used this approach in the past to deploy boosted models, such as Ada
 
 ### DataFlow — BigQuery
 
-```{r 7-1, echo=FALSE, out.width="100%", fig.align="center", fig.cap="Components in the BigQuery Batch Model Deployment."}
+```{r 7-1, echo=FALSE, out.width="100%", fig.align="center", fig.cap="Components in the BigQuery Batch Deployment."}
 knitr::include_graphics("images/7-1.png")
 ```
 
@@ -186,10 +186,9 @@ model=new RegressionModelEvaluator(PMMLUtil.unmarshal(
 
 return input.apply("To Predictions", ParDo.of(
     new DoFn<TableRow, TableRow>() {           
-      
      @ProcessElement          
+      
      public void processElement(ProcessContext c) {
-     
      /* Apply Model */
 }})))
 ```
@@ -247,7 +246,7 @@ When the job completes, the output is a new table in our BigQuery project that s
 
 ### DataFlow — DataStore
 
-```{r 7-4, echo=FALSE, out.width="100%", fig.align="center", fig.cap="Components in the Datastore Batch Model Deployment."}
+```{r 7-4, echo=FALSE, out.width="100%", fig.align="center", fig.cap="Components in the Datastore Batch Deployment."}
 knitr::include_graphics("images/7-4.png")
 ```
 
@@ -271,6 +270,7 @@ The pipeline for performing this task reuses the first two parts of the previous
     keyBuilder.addPath(path);
     Key key = keyBuilder.build();
     
+     
     // set the experiment group
     String expGroup = Double.parseDouble(
          row.get("predicted_weight")
@@ -285,7 +285,7 @@ The pipeline for performing this task reuses the first two parts of the previous
     c.output(builder.build());
   }
 }))
-.apply(DatastoreIO.v1().write().withProjectId(PROJECT_ID));
+.apply(DatastoreIO.v1().write().withProjectId(proj));
 ```
 
 Datastore is a NoSQL database that can be used directly by applications. To create entities for entry into Datastore, you need to create a key. In this example, I used a recordID which is a unique identifier generate for the birth record using the row_number() function in BigQuery. The key is used to store data about a profile, that can be retrieved using this key as a lookup. The second step in this operation is assigning the record to an control or treatment group, based on the predicted birth weight. This type of approach could be useful for a mobile game, where users with a high likelihood of making a purchase can be placed into an experiment group that provides a nudge to make a purchase. The last part of this snippet builds the entity object and then passes the results to Datastore.
@@ -348,9 +348,11 @@ public void handle(...) throws IOException{
 
 The code processes a message request, which contains parameters with the values to use a model inputs. The snippet first loads the PMML specification, creates an input map of features using the web request parameters, applies the evaluator to get a predicted value, and writes the result as output. The modelFeatures array contains the list of features specified in the PMML file. A request to the service can be made as follows:
 
-&nbsp;
+&nbsp; 
 ```{r eval=FALSE}
-http://localhost:8080/&year=2000&plurality=1&apgar_5min=0&mother_age=30&father_age=28&gestation_weeks=40&ever_born=1&mother_married=1
+http://localhost:8080/&year=2000&plurality=1
+  &apgar_5min=0&mother_age=30&father_age=28
+  &gestation_weeks=40&ever_born=1&married=1
 ```
 
 The result of entering this URL in your browser is a web page which lists the predicted weight of 7.547 lbs. In practice, you’d probably want to use a message encoding, such as JSON, rather than passing raw parameters. This approach is simple and has relatively low latency, but does require managing services. Scaling up is easy, because each model application can be performed in isolation, and no state is updated after providing a prediction.

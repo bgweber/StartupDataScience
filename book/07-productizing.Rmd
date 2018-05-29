@@ -150,7 +150,7 @@ I use IntelliJ IDEA for authoring and deploying Dataflow jobs. While setting up 
 </dependency>
 ```
 
-As shown in the figure above, our data flow job consists of three steps that we’ll cover in more detail. Before discussing these steps, we need to create the pipeline object:
+As shown in the figure below, our data flow job consists of three steps that we’ll cover in more detail. Before discussing these steps, we need to create the pipeline object:
 
 &nbsp;
 ```{r eval=FALSE}

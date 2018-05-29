@@ -71,7 +71,7 @@ The best performing algorithm out of the ones I explored was LogitBoost. This al
 knitr::include_graphics("images/6-2.png")
 ```
 
-A visualization of the ROC curve for the logistic regression model is shown in the figure above. It’s also possible to explore the importance of different features in a logistic regression model with Weka. You can inspect the coefficients of the model directly. For example, weight_pounds has the highest coefficient value of 0.93. It’s also possible to use the InfoGain attribute ranker to determine which features are most important for this classification task. Weka found that weight_pounds (0.0415) was the most influential feature, followed by gestation_weeks (0.0243).
+A visualization of the ROC curve for the logistic regression model is shown in the figure below. It’s also possible to explore the importance of different features in a logistic regression model with Weka. You can inspect the coefficients of the model directly. For example, weight_pounds has the highest coefficient value of 0.93. It’s also possible to use the InfoGain attribute ranker to determine which features are most important for this classification task. Weka found that weight_pounds (0.0415) was the most influential feature, followed by gestation_weeks (0.0243).
 
 Weka is usually not the best choice for productizing models, but it does provide a useful tool for exploring a wide variety of different algorithms.
 
@@ -82,7 +82,7 @@ Another tool that I’ve used in my startup experience is BigML^[https://bigml.c
 knitr::include_graphics("images/6-3.png")
 ```
 
-The image above shows one of the feature importance tools provided by BigML. These tools are useful for understanding which features are useful in predicting an outcome. I explored two different models with BigML, resulting in the following AUC metrics:
+The image below shows one of the feature importance tools provided by BigML. These tools are useful for understanding which features are useful in predicting an outcome. I explored two different models with BigML, resulting in the following AUC metrics:
 
 - **Logistic:** 0.890
 - **DeepNet:** 0.902
@@ -140,7 +140,7 @@ cat(paste("ROC:", max(cvfit$cvlo)))
 plot(cvfit)
 ```
 
-The glmnet package provides a built-in cross validation feature that can be used to optimize for different metrics, such AUC. The R code above shows how to train a logistic regression model using this feature, and plots the outcome in the figure shown below. The AUC metric for the regularized logistic regression model was 0.893.
+The glmnet package provides a built-in cross validation feature that can be used to optimize for different metrics, such AUC. The R code above shows how to train a logistic regression model using this feature, and plots the outcome in the figure shown above. The AUC metric for the regularized logistic regression model was 0.893.
 
 ```{r 6-7, echo=FALSE, out.width="100%", fig.cap="Performance (AUC) of the glmnet model based on different lambda values."}
 knitr::include_graphics("images/6-7.png")
@@ -202,7 +202,7 @@ fviz_pca_var(PCA(affluent,  graph = FALSE),
   labs(title="Affluent Households - Assets Factor Map")
 ``` 
 
-The results plotted below show that there are a few different assets groups that vary across affluent households. The most significant factor is business equity. Some other groupings of factors include investment assets (STOCKS, BONDS) and real estate assets/retirement funds.
+The results plotted above show that there are a few different assets groups that vary across affluent households. The most significant factor is business equity. Some other groupings of factors include investment assets (STOCKS, BONDS) and real estate assets/retirement funds.
 
 ```{r 6-9, echo=FALSE, out.width="100%", fig.cap="A factor map showing differences in asset allocations."}
 knitr::include_graphics("images/6-9.png")
@@ -220,7 +220,7 @@ res.hc <- eclust(
 fviz_dend(res.hc, rect = TRUE, show_labels = FALSE)
 ```
 
-To determine how many clusters to use, I created a cluster dendrogram using the code snippet above. The result is the figure shown below. I also varied the number of clusters, k, until we had the largest number of distinctly identifiable clusters.
+To determine how many clusters to use, I created a cluster dendrogram using the code snippet above. The result is the figure shown above. I also varied the number of clusters, k, until we had the largest number of distinctly identifiable clusters.
 
 ```{r 6-10, echo=FALSE, out.width="100%", fig.cap="A hierarchical visualization of the cluster assignments."}
 knitr::include_graphics("images/6-10.png")
@@ -235,7 +235,7 @@ fviz_cluster(clarax, stand = FALSE,
              geom = "point", ellipse = F)
 ```
 
-To cluster the affluent households into unique groupings, I used the CLARA algorithm. A visualization of the different clusters is shown below. The results are similar to PCA and the factor map approach discussed above.
+To cluster the affluent households into unique groupings, I used the CLARA algorithm. A visualization of the different clusters is shown above. The results are similar to PCA and the factor map approach discussed earlier.
 
 ```{r 6-11, echo=FALSE, out.width="100%", fig.cap="A visualization of the two-principal components identified by PCA."}
 knitr::include_graphics("images/6-11.png")

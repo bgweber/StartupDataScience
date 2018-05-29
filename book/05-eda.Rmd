@@ -197,7 +197,7 @@ booteval.relimp(boot)
 plot(booteval.relimp(boot,sort=TRUE))
 ```
 
-The results of this script are shown in the plots below. Different approaches are used to weight the features, and all of these methods show that plurality is the strongest feature in determining birth weight. The script first fits a linear regression model by specifying weight_points as the target value, and then uses the relative importance library to determine which features are significant in determining the outcome.
+The results of this script are shown in the plots above. Different approaches are used to weight the features, and all of these methods show that plurality is the strongest feature in determining birth weight. The script first fits a linear regression model by specifying weight_points as the target value, and then uses the relative importance library to determine which features are significant in determining the outcome.
 
 ```{r 5-9, echo=FALSE, out.width="100%", fig.cap="Feature Weighting for the Natality data set."}
 knitr::include_graphics("images/5-9.png")

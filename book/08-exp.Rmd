@@ -40,7 +40,7 @@ Typically, we compare the difference between the test and control groups for a t
 We use the first approach to estimate absolute changes in key metrics using aggregate-level data and the second approach to perform significance testing on a collection of metrics using user-level data. Both approaches are used to account for biases in the way that staged rollouts sample users.
 
 ### Staged Rollout Biases 
-One of the issues to be aware of when using staged rollouts on Google Play is that it may take several days for users to update to the new binary release (APK). We used a 10% sample rate for our test build, and it took about 2 weeks for users to converge to this value. The chart below shows the adoption rate of the new APK, where adoption rate is defined as the number of users that updated over the total number of active users.
+One of the issues to be aware of when using staged rollouts on Google Play is that it may take several days for users to update to the new binary release (APK). We used a 10% sample rate for our test build, and it took about 2 weeks for users to converge to this value. The chart above shows the adoption rate of the new APK, where adoption rate is defined as the number of users that updated over the total number of active users.
 
 ```{r 8-2, echo=FALSE, out.width="90%", fig.align="center", fig.cap="Adoption rate of APKs in the experiment."}
 knitr::include_graphics("images/8-2.png")

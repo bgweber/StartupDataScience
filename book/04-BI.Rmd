@@ -48,7 +48,7 @@ plot_ly(df, x = ~date, y = ~amount,
           color = ~type) %>% add_lines() 
 ```
 
-The first part of this script, which includes everything except for the last line, is responsible for pulling the data from BigQuery. It loads the necessary libraries, states a query to run, and uses bigrquery to fetch the result set. Once the data has been pulled into a data frame, the second part of the script uses the plotly library to display the results as a line chart. Some additional formatting steps have been excluded from the script, and the full code listing is available on Github. In RStudio, the chart will show up as an interactive plot in the IDE, and Jupyter provides similar functionality. The result of this code snippet is shown in the chart below.
+The first part of this script, which includes everything except for the last line, is responsible for pulling the data from BigQuery. It loads the necessary libraries, states a query to run, and uses bigrquery to fetch the result set. Once the data has been pulled into a data frame, the second part of the script uses the plotly library to display the results as a line chart. Some additional formatting steps have been excluded from the script, and the full code listing is available on Github. In RStudio, the chart will show up as an interactive plot in the IDE, and Jupyter provides similar functionality. The result of this code snippet is shown in the chart above.
 
 ```{r 4-1, echo=FALSE, out.width="100%", fig.cap="Monthly Spending by Payment"}
 knitr::include_graphics("images/4-1.png")
@@ -166,7 +166,7 @@ ui <- shinyUI(fluidPage(
 shinyApp(ui = ui, server = server)
 ```
 
-The UI function specifies how to lay out the components in the dashboard. I started with the Hello Shiny example, which includes a slider and histogram, and modified the layout to use a plotlyOutput object instead of a plotOutput. The slider specifies the years to allow for selection, and sets a default value. The behavior function specifies how to respond to changes in UI components. The plot is the same as behavior, with one modification, it now filters on the starting data when using the data frame df$date >= input$year. The result is the interactive dashboard shown below. Moving the slider will now filter the years that are included in the chart.
+The UI function specifies how to lay out the components in the dashboard. I started with the Hello Shiny example, which includes a slider and histogram, and modified the layout to use a plotlyOutput object instead of a plotOutput. The slider specifies the years to allow for selection, and sets a default value. The behavior function specifies how to respond to changes in UI components. The plot is the same as behavior, with one modification, it now filters on the starting data when using the data frame df\$date >= input\$year. The result is the interactive dashboard shown above. Moving the slider will now filter the years that are included in the chart.
 
 ```{r 4-4, echo=FALSE, out.width="100%", fig.cap="An interactive Chart in R Shiny."}
 knitr::include_graphics("images/4-4.png")

@@ -10,5 +10,5 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: bgweber/StartupDataScience
-description: "Data Science for Startips"
+description: "Data Science for Startups"
 ---

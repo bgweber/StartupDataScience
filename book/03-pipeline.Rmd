@@ -327,7 +327,7 @@ knitr::include_graphics("images/3-12.png")
 --maxNumWorkers=30
 ``` 
 
-Additional details on setting up a DataFlow task to scale to heavy workload conditions are available from Spotify^[https://labs.spotify.com/2016/03/10/]. The image below shows how DataFlow can scale up to meet demand as necessary.
+Additional details on setting up a DataFlow task to scale to heavy workload conditions are available from Spotify^[https://labs.spotify.com/2016/03/10/]. The image above shows how DataFlow can scale up to meet demand as necessary.
 
 ```{r 3-13, echo=FALSE, out.width="100%", fig.align="center", fig.cap="An example of Dataflow auto scaling."}
 knitr::include_graphics("images/3-13.png")

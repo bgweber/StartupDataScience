@@ -26,7 +26,7 @@ The answer is that it depends on your product and intended use cases, but there 
 
 For these three types of events, the data may actually be generated from three different systems. Installation data might come from a third party, such as Google Play or the App Store, a session start event will be generated from the client application, and spending money in an application, or viewing ads, may be tracked by a different server. As long as you own the service that is generating the data points, you can use the same infrastructure to collect data about different types of events.
 
-Collecting data about how many users launch and log into a application will enable you to answer basic questions about the size of your base, and enable you to track business metrics such as DAU, MAU, ARPDAU, and D-7 retention. However, it doesn’t provide much insight into what users are doing within an application, and it doesn’t provide many data points that are useful for building data products. In order to better understand user engagement, it’s necessary to track data points that are domain or product specific. For example, you might want to track the following types of events in a multiplayer shooter game for consoles:
+Collecting data about how many users launch and log into a application will enable you to answer basic questions about the size of your user base, and enable you to track business metrics such as DAU, MAU, ARPDAU, and D-7 retention. However, it doesn’t provide much insight into what users are doing within an application, and it doesn’t provide many data points that are useful for building data products. In order to better understand user engagement, it’s necessary to track data points that are domain or product specific. For example, you might want to track the following types of events in a multiplayer shooter game for consoles:
 
 - **GameStarted:** tracks when the player starts a single or multiplayer game.
 - **PlayerSpawn:** tracks when the player spawns into the game world and tracks the class that the user is playing, such as combat medic.
@@ -132,7 +132,7 @@ in.close();
 This is one of the easiest ways to start collecting tracking data, but it doesn’t scale and it’s not secure. It’s useful for testing, but should be avoided for anything customer facing. I did use this approach in the past to collect data about players for a Mario level generator experiment^[http://www.gamasutra.com/blogs/BenWeber/20131228/207819/].
 
 ### Web Server
-Another approach you can use is setting up a web service to collect tracking events. The code below shows how to use Jetty to set up a lightweight service for collecting data. In order to compile and run the example, you’ll need to include the following pom file. The first step is to start a web service that will handle tracking requests:
+Another approach you can use is setting up a web service to collect tracking events. The code below shows how to use Jetty to set up a lightweight service for collecting data. In order to compile and run the example, you’ll need to include the project pom file. The first step is to start a web service that will handle tracking requests:
 
 &nbsp;
 ```{r eval=FALSE}
@@ -214,7 +214,7 @@ publisher.shutdown();
 
 This code example shows how to send a single message to PubSub for recording a tracking event. For a production system, you’ll want to implement the onFailure method in order to deal with failed deliveries. The code above shows how to send a message with Java, while other languages are supported including Go, Python, C#, and PHP. It’s also possible to interface with other stream processing systems such as Kafka.
 
-The next code segment shows how to read a message from PubSub and append the message to a local file.In the next chapter I’ll show how to consume messages using DataFlow.
+The next code segment shows how to read a message from PubSub and append the message to a local file. In the next chapter I’ll show how to consume messages using DataFlow.
 
 &nbsp;
 ```{r eval=FALSE}

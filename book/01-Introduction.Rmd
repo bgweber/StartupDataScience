@@ -1,5 +1,5 @@
 # Introduction {#intro}
-I recently changed industries and joined a startup company where I’m responsible for building up a data science discipline. While we already had a solid data pipeline in place when I joined, we didn’t have processes in place for reproducible analysis, scaling up models, and performing experiments. The goal of this book is to provide an overview of how to build a data science platform from scratch for a startup, providing real examples using Google Cloud Platform (GCP) that readers can try out themselves.
+In 2017, I changed industries and joined a startup company where I was responsible for building up a data science discipline. While we already had a solid data pipeline in place when I joined, we didn’t have processes in place for reproducible analysis, scaling up models, and performing experiments. The goal of this book is to provide an overview of how to build a data science platform from scratch for a startup, providing real examples using Google Cloud Platform (GCP) that readers can try out themselves.
 
 This book is intended for data scientists and analysts that want to move beyond the model training stage, and build data pipelines and data products that can be impactful for an organization. However, it could also be useful for other disciplines that want a better understanding of how to work with data scientists to run experiments and build data products. It is intended for readers with programming experience, and will include code examples primarily in R and Java.
 
@@ -17,7 +17,7 @@ Some of the benefits of using data science at a start up are:
 Many organizations get stuck on the first two or three steps, and do not utilize the full potential of data science. A goal of this book is to show how managed services can be used for small teams to move beyond data pipelines for just calculating run-the-business metrics, and transition to an organization where data science provides key input for product development.
 
 ## Book Overview
-Here are the topics I am covered in this book. Many of these chapters are based on my blog posts on Medium^[https://medium.com/@bgweber].
+Here are the topics I am covering in this book. Many of these chapters are based on my blog posts on Medium^[https://medium.com/@bgweber].
 
 - **Introduction:** This chapter provides motivation for using data science at a startup and provides an overview of the content covered in this book. Similar posts include functions of data science, scaling data science and my FinTech journey.
 - **Tracking Events:** Discusses the motivation for capturing data from applications and web pages, proposes different methods for collecting tracking data, introduces concerns such as privacy and fraud, and presents an example with Google PubSub.
@@ -33,6 +33,6 @@ Here are the topics I am covered in this book. Many of these chapters are based 
 ## Tooling
 Throughout the book, I’ll be presenting code examples built on Google Cloud Platform. I choose this cloud option, because GCP provides a number of managed services that make it possible for small teams to build data pipelines, productize predictive models, and utilize deep learning. It’s also possible to sign up for a free trial with GCP and get $300 in credits. This should cover most of the topics presented in this book, but it will quickly expire if your goal is to dive into deep learning on the cloud.
 
-For programming languages, I’ll be using R for scripting and Java for production, as well as SQL for working with data in BigQuery. I’ll also present other tools such as R Shiny. Some experience with R and Java is recommended, since I won’t be covering the basics of these languages. 
+For programming languages, I’ll be using R for scripting and Java for production, as well as SQL for working with data in BigQuery. I’ll also present other tools such as R Shiny. Some experience with R and Java is recommended, since I won’t be covering the basics of these languages.
 
 This book is based on my blog series "Data Science for Startups"^[https://medium.com/p/80d022a18aec]. I incorporated feedback from these posts into book chapters, and authored the book using the excellent bookdown package [@R-bookdown]. All of the code examples for this book, along with the R markdown files used to author the text, are available online^[https://github.com/bgweber/StartupDataScience].  

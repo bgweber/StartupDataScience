@@ -15,7 +15,7 @@ fit <- nls(log10(y) ~ log(x1*b1 + x2*b2 + ... + x9*b9)
    ,data = df, start = list(b1=1, b2=1, ... , b9 = 1))
 ```
 
-You can actually do this explicitly in R, using packages such as nonlinear least squares (nls). The code sample above shows how to build a linear regression model using the built-in optimizer, which will overweight samples with large label values, and the nls approach which shows how to perform a log transformation on both the predicted values and labels, which will give the samples relatively equal weight. The problem with the second approach is that you have to explicitly state how to use the features in the model, creating a feature engineering problem. An additional problem with this approach is that it cannot be applied directly to other algorithms, such as random forests, without writing your own likelihood function and optimizer. This is a for a specific scenario where you want to have the error term outside of the log transform, not a scenario where you can simply apply a log transformation to the label and all input variables.
+You can actually do this explicitly in R, using packages such as nonlinear least squares (nls). The code sample above shows how to build a linear regression model using the built-in optimizer, which will overweight samples with large label values, and the nls approach which shows how to perform a log transformation on both the predicted values and labels, which will give the samples relatively equal weight. The problem with the second approach is that you have to explicitly state how to use the features in the model, creating a feature engineering problem. An additional problem with this approach is that it cannot be applied directly to other algorithms, such as random forests, without writing your own likelihood function and optimizer. This is for a specific scenario where you want to have the error term outside of the log transform, not a scenario where you can simply apply a log transformation to the label and all input variables.
 
 Deep learning provides an elegant solution to handling these types of problems, where instead of writing a custom likelihood function and optimizer, you can explore different built-in and custom loss functions that can be used with the different optimizers provided. This chapter will show how to write custom loss functions in R when using Keras, and show how using different approaches can be beneficial for different types of data sets.
 
@@ -150,7 +150,7 @@ model %>% compile(
 )
 ```
 
-The last step is to fit the model and then evaluate the performance. I used 100 epochs with a batch size of 5, and a 20% validation split. After training the model of the training data set, the performance of the model is evaluated on the mean absolute error on the test data set.
+The last step is to fit the model and then evaluate the performance. I used 100 epochs with a batch size of 5, and a 20% validation split. After training the model on the training data set, the performance of the model is evaluated on the mean absolute error on the test data set.
 
 &nbsp;
 ```{r eval=FALSE}
@@ -170,7 +170,7 @@ results <- model %>% evaluate(test_data,
 results$mean_absolute_error
 ```
 
-I trained four different models with the different loss functions, and applied this approach to both the original housing prices and the transformed housing prices. The results for all of these different combinations are shown below.
+I trained four different models with the different loss functions, and applied this approach to both the original housing prices and the transformed housing prices. The results for all of these different combinations are shown above.
 
 ```{r 10-3, echo=FALSE, out.width="100%", fig.align="center", fig.cap="Performance of the Loss Functions on the Housing Price Data Sets."}
 knitr::include_graphics("images/10-3.png")

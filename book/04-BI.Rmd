@@ -29,7 +29,7 @@ Consider a scenario where you are part of a NYC startup in the transportation se
 The first approach we'll use to answer this question is using a plotting library in R to create a plot. I recommend using the RStudio IDE when taking this approach. Also, this approach is not actually "Base R", because I am using two additional libraries to accomplish the goal of summarizing this data set and plotting the results. I'm referring to this section as Base R, because I am using the built-in visualization capabilities of R.
 
 One of the great aspects of R is that there's a variety of different libraries available for working with different types of databases. 
-The bigrquery library provides a useful connector to BigQuery that can be used to pull data from the public data set within an R script. The code for summarizing the payment history over time and plotting the results as a chart are shown below.
+The bigrquery library provides a useful connector to BigQuery that can be used to pull data from the public data set within an R script. The code for summarizing the payment history over time and plotting the results as a chart is shown below.
 
 &nbsp;
 ```{r eval=FALSE}
@@ -50,13 +50,13 @@ plot_ly(df, x = ~date, y = ~amount,
 
 The first part of this script, which includes everything except for the last line, is responsible for pulling the data from BigQuery. It loads the necessary libraries, states a query to run, and uses bigrquery to fetch the result set. Once the data has been pulled into a data frame, the second part of the script uses the plotly library to display the results as a line chart. Some additional formatting steps have been excluded from the script, and the full code listing is available on Github. In RStudio, the chart will show up as an interactive plot in the IDE, and Jupyter provides similar functionality. The result of this code snippet is shown in the chart above.
 
-```{r 4-1, echo=FALSE, out.width="100%", fig.cap="Monthly Spending by Payment"}
+```{r 4-1, echo=FALSE, out.width="100%", fig.cap="Monthly Spending by Payment Type."}
 knitr::include_graphics("images/4-1.png")
 ```
 
-TypeThe query calculates the total monthly spend by payment type for taxi trips in NYC, using data from 2009 to 2015. The results show that credit cards (CRD) are now the preferred payment method over cash (CSH). To answer the initial question about what type of payment system to implement, I'd recommend starting with a system that accepts credit cards.
+The query calculates the total monthly spend by payment type for taxi trips in NYC, using data from 2009 to 2015. The results show that credit cards (CRD) are now the preferred payment method over cash (CSH). To answer the initial question about what type of payment system to implement, I'd recommend starting with a system that accepts credit cards.
 
-One topic worth bringing up at this point is data quality, since the chart has a number of different labels that seem to represent the same values. For example CAS and CSH both likely refer to cash payments and should be grouped together to get an accurate total of cash payments. Dealing with these types of issues is outside the scope of this approach, but there are a few methods that can be used for this type of scenario. The easiest but least scalable approach is to write queries that account for these different types:
+One topic worth bringing up at this point is data quality, since the chart has a number of different labels that seem to represent the same values. For example CAS and CSH both likely refer to cash payments and should be grouped together to get an accurate total of cash payments. Dealing with these types of issues is outside the scope of this book, but there are a few methods that can be used for this type of scenario. The easiest but least scalable approach is to write queries that account for these different types:
 
 &nbsp;
 ```{r eval=FALSE}
@@ -75,9 +75,9 @@ total <- aggregate(df$Amount,
 plot_ly(total, x = ~Category, y = ~x) %>% add_lines()
 ```
 
-This code computes the total monthly payments across all of the different payment types, and plots the aggregate value as a single line chart. The results are shown in the figure below. Based on the initial observation of this data, the answer to the second question is unclear. There's been a steady increase in taxi spending in NYC from 2009 to 2013, with seasonal fluctuations, but spending peaked in sum mer of 2014. It's possible that Uber and Lyft account for this trend, but further analysis is needed to draw a firm conclusion.
+This code computes the total monthly payments across all of the different payment types, and plots the aggregate value as a single line chart. The results are shown in the figure below. Based on the initial observation of this data, the answer to the second question is unclear. There's been a steady increase in taxi spending in NYC from 2009 to 2013, with seasonal fluctuations, but spending peaked in summer of 2014. It's possible that Uber and Lyft account for this trend, but further analysis is needed to draw a firm conclusion.
 
-```{r 4-2, echo=FALSE, out.width="100%", fig.cap="Total Monthly Spending"}
+```{r 4-2, echo=FALSE, out.width="100%", fig.cap="Total Monthly Spending."}
 knitr::include_graphics("images/4-2.png")
 ```
 

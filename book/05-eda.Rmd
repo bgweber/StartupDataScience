@@ -150,18 +150,16 @@ plot(sample$gestation_weeks, sample$weight_pounds,
       xlab= " Gestation Weeks", ylab = "Birth Weight")
 ```
 
-The results are shown in the following visualization. It’s clear from this plot that significantly shorter gestation periods result in lower birth weights, but it’s unclear how strong the correlation is for periods longer than 35 weeks. Overall, the features have an R-squared value of 0.25 for the sample data set. In order to determine which features are correlated with birth weights, we’ll need to use different methods discussed in the next section.
+The results are shown in the visualization above. It’s clear from this plot that significantly shorter gestation periods result in lower birth weights, but it’s unclear how strong the correlation is for periods longer than 35 weeks. Overall, the features have an R-squared value of 0.25 for the sample data set. In order to determine which features are correlated with birth weights, we’ll need to use different methods discussed in the next section.
 
 ```{r 5-7, echo=FALSE, out.width="100%", fig.cap="A comparison of the gestation period and birth weight."}
 knitr::include_graphics("images/5-7.png")
 ```
 
-
-
 ## Correlation Analysis
 It’s useful to know if certain features are predictive of other values in a data set. For example, if we know that users that use a certain product feature are retained longer than other users, it provides useful insight into product development. Correlation analysis helps to understand which features are correlated within a data set. Each feature is compared with all other features in a data set. However, often the goal is to understand only the correlation between a single feature, rather than a complete matrix of comparisons.
 
-It’s also important to avoid coming to strong conclusions based on only correlation analysis, because it’s not possible to establish causality. Usually the more dedicated users will explore more of the options provided by an application, so trying to drive users to perform a specific action is not going to necessarily increase retention. For example, it’s common to see improved retention for users that add social connections within an application, but driving users to add a friend in an application might not result in the desired outcome of longer user retention. It’s best to experiment using controlled methodologies, which I’ll discuss in alater chapter.
+It’s also important to avoid coming to strong conclusions based on only correlation analysis, because it’s not possible to establish causality. Usually the more dedicated users will explore more of the options provided by an application, so trying to drive users to perform a specific action is not going to necessarily increase retention. For example, it’s common to see improved retention for users that add social connections within an application, but driving users to add a friend in an application might not result in the desired outcome of longer user retention. It’s best to experiment using controlled methodologies.
 
 R has a built in function for performing correlation analysis. The cor function computes the correlation between all of the different columns in a data frame, using a specified methodology. The pearson method is useful when dealing with continuous values, and the spearman method is useful when using discrete values, such as survey data. An example of computing a correlation matrix is shown in the R snippet below.
 

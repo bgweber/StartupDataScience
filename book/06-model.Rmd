@@ -8,13 +8,13 @@ Machine learning models typically fail into two categories: supervised learning 
 
 For unsupervised problems, no explicit labels are provided for training a model. The most common type of unsupervised learning method is clustering, which infers labels by forming groups of different instances in a data set. Clustering is useful for answering segmentation questions, such as what are the different archetypes of users that a product should support.
 
-There are two other types of machine learning models that I won’t discuss here: semi-supervised learning and reinforcement learning. Semi-supervised learning is a process that identifies target labels as part of the training process, and is often implemented with autoencoders in deep learning. Reinforcement learning is a model that is updated based on a reward policy, where the actions taken by a model provide positive and negative feedback signals and are used to update the model.
+There are two other types of machine learning models that I won’t cover here: semi-supervised learning and reinforcement learning. Semi-supervised learning is a process that identifies target labels as part of the training process, and is often implemented with autoencoders in deep learning. Reinforcement learning is a model that is updated based on a reward policy, where the actions taken by a model provide positive and negative feedback signals and are used to update the model.
 
 For a startup, you’re likely going to get started with classification and regression models, which are often referred to as classic, or shallow machine learning problems. There’s a wide variety of different approaches that can be used. Some common approaches for classification are logistic regression, naive bayes, decision trees, and ensemble methods such as random forests and XGBoost. Common approaches for regression include many of the same approaches as classification, but linear regression is used in place of logistic regression. Support vector machines were popular back when I was in grad school a decade ago, but now XGBoost seems to be the king of shallow learning problems.
 
 It’s important to know how different algorithms are implemented, because if you want to ship a predictive model as part of a product, it needs to be reliable and scalable. Generally, eager models are preferred over lazy models when shipping products. Eager models are approaches that generate a ruleset as part of the training process, such as the coefficients in a linear regression model, while a lazy model generates the rule set at run time. For example, a nearest neighbor (k-NN) model is a lazy approach. Lazy methods are often useful for building online learning systems, where the model is frequently updated with new data while deployed, but may have scalability issues.
 
-How the performance of a predictive model is evaluated depends on the type of problem being performed. For example, metrics such as mean absolute error (MAE), root-mean squared error (RMSE), and correlation coefficients are useful for evaluate regression models, while ROC area under the curve (AUC), precision, recall, and lift are useful for classification problems.
+How the performance of a predictive model is evaluated depends on the type of problem being performed. For example, metrics such as mean absolute error (MAE), root-mean squared error (RMSE), and correlation coefficients are useful for evaluating regression models, while ROC area under the curve (AUC), precision, recall, and lift are useful for classification problems.
 
 ## Training a Classification Model
 This section presents a few different approaches that can be used to build a classification model. We’ll use the same data set as the past chapter on EDA, but instead of predicting birth weights in the Natality data set, we’ll attempt to predict which pregnancies will result in twins instead of singletons.
@@ -93,7 +93,7 @@ Instead of using 10-fold cross validation, I used a single 80/20 split of the da
 knitr::include_graphics("images/6-4.png")
 ```
 
-In addition to plotting ROC curves, as shown above, BigML can plot other useful visualizations such as lift charts. BigML also provides useful classification metrics such as precision, recall, and F1 score.
+In addition to plotting ROC curves, as shown below, BigML can plot other useful visualizations such as lift charts. BigML also provides useful classification metrics such as precision, recall, and F1 score.
 
 ### R — Glmnet 
 We can implement the logistic regression model that we’ve already evaluated using the glm library in R. The generalized linear models function can be applied to logistic regression by specifying the binomial family as input. R code that loads the CSV and trains a logistic regression model is shown below.
@@ -126,7 +126,7 @@ fit = glmnet(x, y, family = "binomial")
 plot(fit, xvar = "dev", label = TRUE)
 ```
 
-By default, the “least squares” model is used to fit the training data. The chart below shows how the coefficients of the model vary as additional factors are used as input to the model. Initially, only the weight_pounds features is used as input. Once this term begins getting penalized, around the value of -0.6, additional features are consider for the model.
+By default, the “least squares” model is used to fit the training data. The chart below shows how the coefficients of the model vary as additional factors are used as input to the model. Initially, only the weight_pounds features is used as input. Once this term begins getting penalized, around the value of -0.6, additional features are considered for the model.
 
 ```{r 6-6, echo=FALSE, out.width="100%", fig.cap="Feature weights based on different lambda values for glmnet."}
 knitr::include_graphics("images/6-6.png")
@@ -185,7 +185,7 @@ knitr::include_graphics("images/6-8.png")
 ## Clustering
 One of the types of analysis that is useful for startups is understanding if there’s different segments, or clusters of users. The general approach to this type of work is to first identify clusters in the data, assign labels to these clusters, and then assign labels to new records based on the labeled clusters. This section shows how to perform this type of process using data from the 2016 Federal Reserve Survey of Consumer Finances^[https://www.federalreserve.gov/econres/scfindex.htm].
 
-The survey data set provides a breakdown of assets for thousands of households in the US. The goal of this clustering exercise is to identify if there are different types of affluent households, with a net worth of $1M+ USD. The complete code to load the data and perform the analysis is provided in the Jupyter notebook online^[https://bit.ly/2kp5ANb]. Prior analysis with this data set is presented my prior blog post^[https://bit.ly/2koWEHi].
+The survey data set provides a breakdown of assets for thousands of households in the US. The goal of this clustering exercise is to identify if there are different types of affluent households, with a net worth of $1M+ USD. The complete code to load the data and perform the analysis is provided in the Jupyter notebook online^[https://bit.ly/2kp5ANb]. Prior analysis with this data set is available online^[https://bit.ly/2koWEHi].
 
 For each of the surveyed households, we have a number of columns that specify how assets are allocated for the household, including residential and commercial real estate, business equity, retirement, and many other assets. The first thing we want to do is determine which assets have strong signals for clustering users. We can use PCA, and a factor map to accomplish this goal:
 
@@ -202,7 +202,7 @@ fviz_pca_var(PCA(affluent,  graph = FALSE),
   labs(title="Affluent Households - Assets Factor Map")
 ``` 
 
-The results plotted above show that there are a few different assets groups that vary across affluent households. The most significant factor is business equity. Some other groupings of factors include investment assets (STOCKS, BONDS) and real estate assets/retirement funds.
+The results plotted above show that there are a few different asset groups that vary across affluent households. The most significant factor is business equity. Some other groupings of factors include investment assets (STOCKS, BONDS) and real estate assets/retirement funds.
 
 ```{r 6-9, echo=FALSE, out.width="100%", fig.cap="A factor map showing differences in asset allocations."}
 knitr::include_graphics("images/6-9.png")
@@ -316,6 +316,6 @@ For this clustering example, I explored survey data and identified seven differe
 ## Conclusion
 Predictive modeling is an application of machine learning with a wide variety of tools that can be used to get started. One of the first things to consider when building a predictive model is determining the outcome that you’re trying to predict, and establishing metrics that you’ll use to measure success.
 
-In this chapter, I showed four different approaches for building classification models for predicting twins during pregnancy. I showed how the GUI based tools Weka and BigML can be used to evaluate logistic regression models, ensemble models, and deep nets. I also scripting examples for performing logistic regression with regularization in R, and random forests in Python. I concluded the chapter with an example of clustering, which may by useful for performing segmentation tasks for a startup.
+In this chapter, I showed four different approaches for building classification models for predicting twins during pregnancy. I showed how the GUI based tools Weka and BigML can be used to evaluate logistic regression models, ensemble models, and deep nets. I also provided scripting examples for performing logistic regression with regularization in R, and random forests in Python. I concluded the chapter with an example of clustering, which may by useful for performing segmentation tasks for a startup.
 
 Independent of the approach being used to build a predictive model, it’s important to be able to output a model specification as a result of your training process. This can be a list of coefficient weights for a linear regression model, a list of nodes and weights for a random forest model, or a list of neuron weights and activations for a deep learning network. In the next chapter, I’ll discuss how to scale predictive models to millions of users, and being able to represent a trained model as a specification is a prerequisite to production.

@@ -1,13 +1,13 @@
 # Productizing Models
 One the key ways that a data scientist can provide value to a startup is by building data products that can be used to improve products. Making the shift from model training to model deployment means learning a whole new set of tools for building production systems. Instead of just outputting a report or a specification of a model, productizing a model means that a data science team needs to support operational issues for maintaining a live system.
 
-An approach I’ve used to ease this transition is managed tools, such as Google Dataflow, which provides a managed and scalable solution for putting models into production. Most of the approaches discussed in this chapter are using a serverless approach, because it’s usually a better fit for startups than manually provisioning servers. Using tools like Dataflow also enables data scientists to work much closer with engineering teams, since it’s possible to set up staging environments were portions of a data pipeline can be testing prior to deployment. Most early data scientists at a startup will likely be playing an ML engineer role as well, by building data products.
+An approach I’ve used to ease this transition is managed tools, such as Google Dataflow, which provides a managed and scalable solution for putting models into production. Most of the approaches discussed in this chapter are using a serverless approach, because it’s usually a better fit for startups than manually provisioning servers. Using tools like Dataflow also enables data scientists to work much closer with engineering teams, since it’s possible to set up staging environments were portions of a data pipeline can be tested prior to deployment. Most early data scientists at a startup will likely be playing a machine learning (ML) engineer role as well, by building data products.
 
 Rather than relying on a engineering team to translate a model specification to a production system, data scientists should have the tools needed to scale models. One of the ways I’ve accomplished this in the past is by using predictive model markup language (PMML) and Google’s Cloud Dataflow. Here is the workflow I recommend for building and deploying models:
 
-- Train offline models in R or Python
-- Translate the models to PMML
-- Use Dataflow jobs to ingest PMML models for production
+- Train offline models in R or Python.
+- Translate the models to PMML.
+- Use Dataflow jobs to ingest PMML models for production.
 
 This approach enables data scientists to work locally with sampled data sets for training models, and then use the resulting model specifications on the complete data set. The third step may take some initial support from an engineering team, but only needs to be set up once. Using this approach means that data scientists can use any predictive model supported by PMML, and leveraging the managed Dataflow service means that the team does not need to worry about maintaining infrastructure.
 
@@ -60,7 +60,7 @@ library(r2pmml)
 r2pmml(lm, "natality.pmml")
 ```
 
-This code generates the following pmml file. The PMML file format specifies the data fields to use for the model, the type of calculation to perform (regression), and the structure of the model. In this case, the structure of the model is a set of coefficients, which is defined as follows:
+This code generates a pmml file we can use for model production. The PMML file format specifies the data fields to use for the model, the type of calculation to perform (regression), and the structure of the model. In this case, the structure of the model is a set of coefficients, which is defined as follows:
 
 &nbsp;
 ```{r eval=FALSE}
@@ -127,7 +127,7 @@ I’ve also used this approach in the past to deploy boosted models, such as Ada
 knitr::include_graphics("images/7-1.png")
 ```
 
-If your model is more complex, Dataflow provides a great solution for deploying models. When using the Dataflow Java SDK, you define an graph of operations to perform on a collection of objects, and the service will automatically provision hardware to scale up as necessary. In this case, our graph is a set of three operations: read the data from BigQuery, calculate the model prediction for every record, and write the results back to BigQuery. This pipeline generates the following Dataflow DAG:
+If your model is more complex, Dataflow provides a great solution for deploying models. When using the Dataflow Java SDK, you define an graph of operations to perform on a collection of objects, and the service will automatically provision hardware to scale up as necessary. In this case, our graph is a set of three operations: read the data from BigQuery, calculate the model prediction for every record, and write the results back to BigQuery. This pipeline generates the Dataflow DAG shown below.
 
 ```{r 7-2, echo=FALSE, out.width="50%", fig.align="center", fig.cap="The Dataflow graph of operations used in this tutorial."}
 knitr::include_graphics("images/7-2.png")
@@ -238,7 +238,7 @@ pipeline.run();
 
 We now have a pipeline defined that we can run to create predictions for the entire data set. The full code listing for this class is available online^[https://github.com/bgweber/StartupDataScience/tree/master/Productizing]. Running this class spins up a Dataflow job that generates the DAG shown above, and will provision a number of GCE instances to complete the job. Here’s an example of the autoscaling used to run this pipeline:
 
-```{r 7-3, echo=FALSE, out.width="80%", fig.align="center", fig.cap="Autoscaling the Model Predicting Task."}
+```{r 7-3, echo=FALSE, out.width="80%", fig.align="center", fig.cap="Autoscaling the Model Prediction Task."}
 knitr::include_graphics("images/7-3.png")
 ```
 
@@ -288,7 +288,7 @@ The pipeline for performing this task reuses the first two parts of the previous
 .apply(DatastoreIO.v1().write().withProjectId(proj));
 ```
 
-Datastore is a NoSQL database that can be used directly by applications. To create entities for entry into Datastore, you need to create a key. In this example, I used a recordID which is a unique identifier generate for the birth record using the row_number() function in BigQuery. The key is used to store data about a profile, that can be retrieved using this key as a lookup. The second step in this operation is assigning the record to an control or treatment group, based on the predicted birth weight. This type of approach could be useful for a mobile game, where users with a high likelihood of making a purchase can be placed into an experiment group that provides a nudge to make a purchase. The last part of this snippet builds the entity object and then passes the results to Datastore.
+Datastore is a NoSQL database that can be used directly by applications. To create entities for entry into Datastore, you need to create a key. In this example, I used a recordID which is a unique identifier generated for the birth record using the row_number() function in BigQuery. The key is used to store data about a profile, that can be retrieved using this key as a lookup. The second step in this operation is assigning the record to a control or treatment group, based on the predicted birth weight. This type of approach could be useful for a mobile game, where users with a high likelihood of making a purchase can be placed into an experiment group that provides a nudge to make a purchase. The last part of this snippet builds the entity object and then passes the results to Datastore.
 
 The resulting entities stored in Datastore can be used in client applications or web services. The Java code snippet below shows how to retrieve a value from Datastore. For example, a web service could be used to check for offers to provide to a user at login, based on the output of a predictive model.
 
@@ -311,7 +311,7 @@ public static void main(String[] args) {
 The approaches we’ve covered so far have significant latency, and are not useful for creating real-time predictions, such as recommending new content for a user based on their current session activity. To build predictions in near real-time, we’ll need to use different types of model deployments.
 
 ### Web Service 
-One of the ways that you can provide real-time predictions for a model is by setting up a web service that calculates the output. Since we already discussed Jetty in the chapter on tracking data, we’ll reuse it here to accomplish this task. In order for this approach to work, you need to specific all of the model inputs as part of the web request. Alternatively, you could retrieve values from a system like Datastore. An example of using Jetty and JPMML to implement a real-time model service is shown below:
+One of the ways that you can provide real-time predictions for a model is by setting up a web service that calculates the output. Since we already discussed Jetty in the chapter on tracking data, we’ll reuse it here to accomplish this task. In order for this approach to work, you need to specify all of the model inputs as part of the web request. Alternatively, you could retrieve values from a system like Datastore. An example of using Jetty and JPMML to implement a real-time model service is shown below:
 
 &nbsp;
 ```{r eval=FALSE}
@@ -346,7 +346,7 @@ public void handle(...) throws IOException{
 }
 ```
 
-The code processes a message request, which contains parameters with the values to use a model inputs. The snippet first loads the PMML specification, creates an input map of features using the web request parameters, applies the evaluator to get a predicted value, and writes the result as output. The modelFeatures array contains the list of features specified in the PMML file. A request to the service can be made as follows:
+The code processes a message request, which contains parameters with the values to use as model inputs. The snippet first loads the PMML specification, creates an input map of features using the web request parameters, applies the evaluator to get a predicted value, and writes the result as an output. The modelFeatures array contains the list of features specified in the PMML file. A request to the service can be made as follows:
 
 &nbsp; 
 ```{r eval=FALSE}

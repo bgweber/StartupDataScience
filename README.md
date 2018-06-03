@@ -6,4 +6,5 @@ An introduction to building a data science discipline at a startup. This project
 - [Web Book](https://bgweber.github.io/)
 - [Print Book](https://www.amazon.com/dp/1983057975)
 
+
 ![Cover](https://cdn-images-1.medium.com/max/800/1*0mjAmlBD86uyl-rmb7cOww.png)

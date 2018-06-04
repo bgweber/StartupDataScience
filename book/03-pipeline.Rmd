@@ -63,7 +63,7 @@ While I was at Sony Online Entertainment, we had game servers save event files t
 knitr::include_graphics("images/3-2.png")
 ```
 
-When I was a Twitch, we used a similar process for one of our analytics databases. The main difference from the approach at SOE was that instead of having game servers scp files to a central location, we used Amazon Kinesis to stream events from servers to a staging area on S3. We then used an ETL process to fast load data into Redshift for analysis. Since then, Twitch has shifted to a data lake approach, in order to scale to a larger volume of data and to provide more options for querying the datasets.
+When I was at Twitch, we used a similar process for one of our analytics databases. The main difference from the approach at SOE was that instead of having game servers scp files to a central location, we used Amazon Kinesis to stream events from servers to a staging area on S3. We then used an ETL process to fast load data into Redshift for analysis. Since then, Twitch has shifted to a data lake approach, in order to scale to a larger volume of data and to provide more options for querying the datasets.
 
 The databases used at SOE and Twitch were immensely valuable for both of the companies, but we did run into challenges as we scaled the amount of data stored. As we collected more detailed information about gameplay, we could no longer keep complete event history in our tables and needed to truncate data older than a few months. This is fine if you can set up summary tables that maintain the most important details about these events, but it's not an ideal situation.
 

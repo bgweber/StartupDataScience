@@ -8,7 +8,7 @@ RUN apt-get update \
   && pip3 install tensorflow \
   && pip3 install keras \
   && pip3 install pandas \
-  && pip3 install flask \ 
+  && pip3 install flask  
   
 COPY games.h5 games.h5
 COPY keras_app.py keras_app.py
